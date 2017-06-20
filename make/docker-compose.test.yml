@@ -1,0 +1,10 @@
+# docker-compose -f ./docker-compose.test.yml --project ci build
+# docker-compose -f ./docker-compose.test.yml --project ci up -d
+# docker logs -f ci_sut_1
+# docker wait ci_sut_1
+
+version: '3.1'
+
+services:
+  sut:
+    build: .
