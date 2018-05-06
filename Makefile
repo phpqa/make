@@ -22,6 +22,7 @@ build:
 		CACHE_TAG="latest" \
 		IMAGE_NAME="index.docker.io/phpqa/make:latest" \
 		sh ./hooks/build
+
 test:
 
 	@printf "$(STYLE_TITLE)Building image as ci_sut $(STYLE_RESET)\\n"
