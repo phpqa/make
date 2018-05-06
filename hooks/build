@@ -22,15 +22,24 @@ fi
 BASE_IMAGE=$(echo ${INTERNAL_TAG} | awk -F "-on-" '{print $2}' | sed -e '1 s/\-/:/; t')
 VERSION=$(echo ${INTERNAL_TAG} | awk -F "-on-" '{print $1}')
 
+BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+VCS_REF=$(git rev-parse HEAD)
+
 printf "Build variables:\\n"
 printf "BASE_IMAGE=\"${BASE_IMAGE}\"\\n"
 printf "VERSION=\"${VERSION}\"\\n"
+printf "INTERNAL_TAG=\"${INTERNAL_TAG}\"\\n"
+printf "BUILD_DATE=\"${BUILD_DATE}\"\\n"
+printf "VCS_REF=\"${VCS_REF}\"\\n"
 printf "DOCKERFILE_PATH=\"${DOCKERFILE_PATH}\"\\n"
 printf "IMAGE_NAME=\"${IMAGE_NAME}\"\\n"
 
 docker build \
     --build-arg BASE_IMAGE=${BASE_IMAGE} \
     --build-arg VERSION=${VERSION} \
+    --build-arg INTERNAL_TAG=${INTERNAL_TAG} \
+    --build-arg BUILD_DATE=${BUILD_DATE} \
+    --build-arg VCS_REF=${VCS_REF} \
     --file ${DOCKERFILE_PATH} \
     --tag ${IMAGE_NAME} \
     .
