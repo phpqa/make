@@ -12,13 +12,11 @@ printf "DOCKERFILE_PATH=\"${DOCKERFILE_PATH}\"\\n"
 printf "CACHE_TAG=\"${CACHE_TAG}\"\\n"
 printf "IMAGE_NAME=\"${IMAGE_NAME}\"\\n"
 
-cat Dockerfile
-
 printf "Build variables:\\n"
 
 TAG="${CACHE_TAG}"
 if test "${CACHE_TAG}" = "latest"; then
-    TAG_BASE_IMAGE_PART=$(sed -n "s/ARG BASE_IMAGE=\"\(.*\)\"/\1/p" Dockerfile| sed -e '1 s/:/-/; t')
+    TAG_BASE_IMAGE_PART=$(sed -n "s/ARG BASE_IMAGE=\"\(.*\)\"/\1/p" Dockerfile | sed -e '1 s/:/-/; t')
     TAG_VERSION_PART=$(sed -n "s/ARG VERSION=\"\(.*\)\"/\1/p" Dockerfile)
     TAG="${TAG_VERSION_PART}-on-${TAG_BASE_IMAGE_PART}"
 fi
