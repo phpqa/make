@@ -193,17 +193,17 @@ tests-verbose:
 	$(eval $@_BASE_IMAGE := $(shell sed -n "s/ARG BASE_IMAGE=\"\(.*\)\"/\1/p" Dockerfile | sed -e '1 s/:/-/; t'))
 	$(eval $@_LATEST_TAG := $(shell printf "$($@_VERSION)-on-$($@_BASE_IMAGE)"))
 
-	@make --quiet master-branch-image
-	@make --quiet test-master-branch-image
-	@make --quiet clean-master-branch-image
+	@$(THIS_MAKE) --quiet master-branch-image
+	@$(THIS_MAKE) --quiet test-master-branch-image
+	@$(THIS_MAKE) --quiet clean-master-branch-image
 
-	@make --quiet tag-$($@_LATEST_TAG)-image
-	@make --quiet test-tag-$($@_LATEST_TAG)-image
-	@make --quiet clean-tag-$($@_LATEST_TAG)-image
+	@$(THIS_MAKE) --quiet tag-$($@_LATEST_TAG)-image
+	@$(THIS_MAKE) --quiet test-tag-$($@_LATEST_TAG)-image
+	@$(THIS_MAKE) --quiet clean-tag-$($@_LATEST_TAG)-image
 
-	@make --quiet docker-compose-test-image
-	@make --quiet test-docker-compose-image
-	@make --quiet clean-docker-compose-test-image
+	@$(THIS_MAKE) --quiet docker-compose-test-image
+	@$(THIS_MAKE) --quiet test-docker-compose-image
+	@$(THIS_MAKE) --quiet clean-docker-compose-test-image
 
 # Run all tests
 tests:
@@ -212,17 +212,17 @@ tests:
 	$(eval $@_BASE_IMAGE := $(shell sed -n "s/ARG BASE_IMAGE=\"\(.*\)\"/\1/p" Dockerfile | sed -e '1 s/:/-/; t'))
 	$(eval $@_LATEST_TAG := $(shell printf "$($@_VERSION)-on-$($@_BASE_IMAGE)"))
 
-	@make --quiet master-branch-image 1> /dev/null
-	@make --quiet test-master-branch-image
-	@make --quiet clean-master-branch-image 1> /dev/null
+	@$(THIS_MAKE) --quiet master-branch-image 1> /dev/null
+	@$(THIS_MAKE) --quiet test-master-branch-image
+	@$(THIS_MAKE) --quiet clean-master-branch-image 1> /dev/null
 
-	@make --quiet tag-$($@_LATEST_TAG)-image 1> /dev/null
-	@make --quiet test-tag-$($@_LATEST_TAG)-image
-	@make --quiet clean-tag-$($@_LATEST_TAG)-image 1> /dev/null
+	@$(THIS_MAKE) --quiet tag-$($@_LATEST_TAG)-image 1> /dev/null
+	@$(THIS_MAKE) --quiet test-tag-$($@_LATEST_TAG)-image
+	@$(THIS_MAKE) --quiet clean-tag-$($@_LATEST_TAG)-image 1> /dev/null
 
-	@make --quiet docker-compose-test-image > /dev/null 2>&1
-	@make --quiet test-docker-compose-image
-	@make --quiet clean-docker-compose-test-image > /dev/null 2>&1
+	@$(THIS_MAKE) --quiet docker-compose-test-image > /dev/null 2>&1
+	@$(THIS_MAKE) --quiet test-docker-compose-image
+	@$(THIS_MAKE) --quiet clean-docker-compose-test-image > /dev/null 2>&1
 
 
 
