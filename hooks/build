@@ -16,15 +16,15 @@ cat Dockerfile
 
 printf "Build variables:\\n"
 
+TAG="${CACHE_TAG}"
 if test "${CACHE_TAG}" = "latest"; then
-    BASE_IMAGE=$(sed -n "s/ARG BASE_IMAGE=\"\(.*\)\"/\1/p" Dockerfile)
-    VERSION=$(sed -n "s/ARG VERSION=\"\(.*\)\"/\1/p" Dockerfile)
-    TAG="${DOCKER_REPO}:${VERSION}-on-${BASE_IMAGE}"
-else
-    BASE_IMAGE=$(echo ${CACHE_TAG} | awk -F "-on-" '{print $2}' | sed -e '1 s/\-/:/; t')
-    VERSION=$(echo ${CACHE_TAG} | awk -F "-on-" '{print $1}')
-    TAG="${DOCKER_REPO}:${CACHE_TAG}"
+    TAG_BASE_IMAGE_PART=$(sed -n "s/ARG BASE_IMAGE=\"\(.*\)\"/\1/p" Dockerfile| sed -e '1 s/:/-/; t')
+    TAG_VERSION_PART=$(sed -n "s/ARG VERSION=\"\(.*\)\"/\1/p" Dockerfile)
+    TAG="${TAG_VERSION_PART}-on-${TAG_BASE_IMAGE_PART}"
 fi
+
+BASE_IMAGE=$(echo ${TAG} | awk -F "-on-" '{print $2}' | sed -e '1 s/\-/:/; t')
+VERSION=$(echo ${TAG} | awk -F "-on-" '{print $1}')
 
 printf "BASE_IMAGE=\"${BASE_IMAGE}\"\\n"
 printf "VERSION=\"${VERSION}\"\\n"
@@ -35,5 +35,5 @@ docker build \
     --build-arg BASE_IMAGE=${BASE_IMAGE} \
     --build-arg VERSION=${VERSION} \
     --file ${DOCKERFILE_PATH} \
-    --tag ${TAG} \
+    --tag ${DOCKER_REPO}:${TAG} \
     .
