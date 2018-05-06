@@ -1,7 +1,7 @@
 # Set defaults
 
 ARG BASE_IMAGE="docker:18.03"
-ARG VERSION="4.2.1-r0"
+ARG VERSION="4.2.1"
 
 # Build image
 
@@ -17,7 +17,7 @@ RUN apk add --no-cache tini
 
 # Install GNU Make - https://pkgs.alpinelinux.org/package/edge/main/x86/make
 
-RUN apk add --no-cache "make=${VERSION}"
+RUN apk add --no-cache "make=~${VERSION}"
 
 # Add entrypoint script
 
