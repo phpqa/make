@@ -1,4 +1,4 @@
-ARG BASE_IMAGE="alpine:3.7"
+ARG BASE_IMAGE="docker:18.03"
 ARG VERSION="4.2.1-r0"
 
 # Build image
