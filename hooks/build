@@ -12,6 +12,8 @@ printf "DOCKERFILE_PATH=\"${DOCKERFILE_PATH}\"\\n"
 printf "CACHE_TAG=\"${CACHE_TAG}\"\\n"
 printf "IMAGE_NAME=\"${IMAGE_NAME}\"\\n"
 
+cat Dockerfile
+
 printf "Build variables:\\n"
 
 BASE_IMAGE=$(echo ${CACHE_TAG-${LATEST_TAG}} | awk -F "-on-" '{print $2}' | sed -e '1 s/\-/:/; t')
