@@ -1,5 +1,4 @@
 BUILD_DOCKERFILE_PATH = Dockerfile
-BUILD_CACHE_TAG = 4.2.1-r0-on-alpine-3.7
 BUILD_IMAGE_NAME = phpqa/make
 
 TEST_COMMAND = make
@@ -15,7 +14,6 @@ STYLE_DIM = \033[2m
 build:
 
 	@ \
-		export CACHE_TAG=$(BUILD_CACHE_TAG); \
 		export DOCKERFILE_PATH=$(BUILD_DOCKERFILE_PATH); \
 		export IMAGE_NAME=$(BUILD_IMAGE_NAME); \
 		sh ./hooks/build

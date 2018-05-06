@@ -1,14 +1,30 @@
 #!/bin/sh
 
-BASE_IMAGE=$(echo ${CACHE_TAG} | awk -F "-on-" '{print $2}' | sed -e '1 s/\-/:/; t')
-VERSION=$(echo ${CACHE_TAG} | awk -F "-on-" '{print $1}')
+LATEST_TAG=4.2.1-r0-on-alpine-3.7
 
-echo "BASE_IMAGE=${BASE_IMAGE}"
-echo "VERSION=${VERSION}"
+printf "Environment variables:\\n\\n"
+
+printf "SOURCE_BRANCH=${SOURCE_BRANCH}\\n"
+printf "SOURCE_COMMIT=${SOURCE_COMMIT}\\n"
+printf "COMMIT_MSG=${COMMIT_MSG}\\n"
+printf "DOCKER_REPO=${DOCKER_REPO}\\n"
+printf "DOCKERFILE_PATH=${DOCKERFILE_PATH}\\n"
+printf "CACHE_TAG=${CACHE_TAG}\\n"
+
+printf "Build variables:\\n\\n"
+
+BASE_IMAGE=$(echo ${CACHE_TAG-${LATEST_TAG}} | awk -F "-on-" '{print $2}' | sed -e '1 s/\-/:/; t')
+VERSION=$(echo ${CACHE_TAG-${LATEST_TAG}} | awk -F "-on-" '{print $1}')
+TAG="${IMAGE_NAME}:${CACHE_TAG-latest}"
+
+printf "BASE_IMAGE=${BASE_IMAGE}\\n"
+printf "VERSION=${VERSION}\\n"
+printf "DOCKERFILE_PATH=${DOCKERFILE_PATH}\\n"
+printf "TAG=${TAG}\\n"
 
 docker build \
     --build-arg BASE_IMAGE=${BASE_IMAGE} \
     --build-arg VERSION=${VERSION} \
     --file ${DOCKERFILE_PATH} \
-    --tag ${IMAGE_NAME}:${CACHE_TAG} \
+    --tag ${TAG} \
     .
