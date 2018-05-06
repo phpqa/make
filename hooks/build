@@ -11,7 +11,6 @@ printf "DOCKERFILE_PATH=\"${DOCKERFILE_PATH}\"\\n"
 printf "CACHE_TAG=\"${CACHE_TAG}\"\\n"
 printf "IMAGE_NAME=\"${IMAGE_NAME}\"\\n"
 
-
 # INTERNAL_TAG is only used for extracting the BASE_IMAGE and the VERSION, adding our own tags happens in post_push
 INTERNAL_TAG="${SOURCE_BRANCH}"
 if test "${SOURCE_BRANCH}" = "master"; then
