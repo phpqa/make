@@ -14,10 +14,14 @@ STYLE_DIM = \033[2m
 build:
 
 	@ \
-		export DOCKERFILE_PATH=$(BUILD_DOCKERFILE_PATH); \
-		export IMAGE_NAME=$(BUILD_IMAGE_NAME); \
+		SOURCE_BRANCH="master" \
+		SOURCE_COMMIT="this is not a commit" \
+		COMMIT_MSG="this is not a commit message" \
+		DOCKER_REPO="index.docker.io/phpqa/make" \
+		DOCKERFILE_PATH="Dockerfile" \
+		CACHE_TAG="latest" \
+		IMAGE_NAME="index.docker.io/phpqa/make:latest" \
 		sh ./hooks/build
-
 test:
 
 	@printf "$(STYLE_TITLE)Building image as ci_sut $(STYLE_RESET)\\n"
