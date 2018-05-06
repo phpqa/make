@@ -14,7 +14,7 @@ printf "IMAGE_NAME=\"${IMAGE_NAME}\"\\n"
 
 # INTERNAL_TAG is only used for extracting the BASE_IMAGE and the VERSION, adding our own tags happens in post_push
 INTERNAL_TAG="${SOURCE_BRANCH}"
-if test "${CACHE_TAG}" = "latest"; then
+if test "${SOURCE_BRANCH}" = "master"; then
     INTERNAL_TAG_BASE_IMAGE_PART=$(sed -n "s/ARG BASE_IMAGE=\"\(.*\)\"/\1/p" Dockerfile | sed -e '1 s/:/-/; t')
     INTERNAL_TAG_VERSION_PART=$(sed -n "s/ARG VERSION=\"\(.*\)\"/\1/p" Dockerfile)
     INTERNAL_TAG="${INTERNAL_TAG_VERSION_PART}-on-${INTERNAL_TAG_BASE_IMAGE_PART}"
