@@ -11,7 +11,6 @@ printf "DOCKERFILE_PATH=\"${DOCKERFILE_PATH}\"\\n"
 printf "CACHE_TAG=\"${CACHE_TAG}\"\\n"
 printf "IMAGE_NAME=\"${IMAGE_NAME}\"\\n"
 
-INTERNAL_TAG="${CACHE_TAG}"
 if test "${CACHE_TAG}" = "latest"; then
     INTERNAL_TAG_BASE_IMAGE_PART=$(sed -n "s/ARG BASE_IMAGE=\"\(.*\)\"/\1/p" Dockerfile | sed -e '1 s/:/-/; t')
     INTERNAL_TAG_VERSION_PART=$(sed -n "s/ARG VERSION=\"\(.*\)\"/\1/p" Dockerfile)
