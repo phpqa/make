@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-LATEST_TAG=4.2.1-r0-on-alpine-3.7
+set -e
 
 printf "Environment variables:\\n"
 
@@ -16,9 +16,15 @@ cat Dockerfile
 
 printf "Build variables:\\n"
 
-BASE_IMAGE=$(echo ${CACHE_TAG-${LATEST_TAG}} | awk -F "-on-" '{print $2}' | sed -e '1 s/\-/:/; t')
-VERSION=$(echo ${CACHE_TAG-${LATEST_TAG}} | awk -F "-on-" '{print $1}')
-TAG="${IMAGE_NAME}:${CACHE_TAG-latest}"
+if test "${CACHE_TAG}" = "latest"; then
+    BASE_IMAGE=$(sed -n "s/ARG BASE_IMAGE=\"\(.*\)\"/\1/p" Dockerfile)
+    VERSION=$(sed -n "s/ARG VERSION=\"\(.*\)\"/\1/p" Dockerfile)
+    TAG="${DOCKER_REPO}:${VERSION}-on-${BASE_IMAGE}"
+else
+    BASE_IMAGE=$(echo ${CACHE_TAG} | awk -F "-on-" '{print $2}' | sed -e '1 s/\-/:/; t')
+    VERSION=$(echo ${CACHE_TAG} | awk -F "-on-" '{print $1}')
+    TAG="${DOCKER_REPO}:${CACHE_TAG}"
+fi
 
 printf "BASE_IMAGE=\"${BASE_IMAGE}\"\\n"
 printf "VERSION=\"${VERSION}\"\\n"
