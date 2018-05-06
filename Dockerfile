@@ -1,8 +1,26 @@
-FROM docker
-MAINTAINER Bart Reunes <metalarend@gmail.com>
+ARG BASE_IMAGE="alpine:3.7"
+ARG VERSION="4.2.1-r0"
 
-RUN apk add --no-cache --quiet make
+# Build image
 
-ENTRYPOINT ["make"]
-CMD ["--help"]
+FROM ${BASE_IMAGE}
+ARG VERSION
+
+# Install Tini - https://github.com/krallin/tini
+
+RUN apk add --no-cache tini
+
+# Install GNU Make - https://pkgs.alpinelinux.org/package/edge/main/x86/make
+
+RUN apk add --no-cache "make=${VERSION}"
+
+# Add entrypoint script
+
+COPY ./docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+# Package container
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["make"]
 

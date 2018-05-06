@@ -1,0 +1,14 @@
+#!/bin/sh
+
+BASE_IMAGE=$(echo ${CACHE_TAG} | awk -F "-on-" '{print $2}' | sed -e '1 s/\-/:/; t')
+VERSION=$(echo ${CACHE_TAG} | awk -F "-on-" '{print $1}')
+
+echo "BASE_IMAGE=${BASE_IMAGE}"
+echo "VERSION=${VERSION}"
+
+docker build \
+    --build-arg BASE_IMAGE=${BASE_IMAGE} \
+    --build-arg VERSION=${VERSION} \
+    --file ${DOCKERFILE_PATH} \
+    --tag ${IMAGE_NAME}:${CACHE_TAG} \
+    .
