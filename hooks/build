@@ -36,6 +36,7 @@ printf "IMAGE_NAME=\"${IMAGE_NAME}\"\\n"
 docker build \
     --build-arg BASE_IMAGE=${BASE_IMAGE} \
     --build-arg VERSION=${VERSION} \
+    --build-arg IMAGE_NAME=${IMAGE_NAME} \
     --build-arg INTERNAL_TAG=${INTERNAL_TAG} \
     --build-arg BUILD_DATE=${BUILD_DATE} \
     --build-arg VCS_REF=${VCS_REF} \
