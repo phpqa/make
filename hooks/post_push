@@ -12,11 +12,9 @@ printf "CACHE_TAG=\"${CACHE_TAG}\"\\n"
 printf "IMAGE_NAME=\"${IMAGE_NAME}\"\\n"
 
 if test "${SOURCE_BRANCH}" = "master"; then
-    INTERNAL_TAG_BASE_IMAGE_PART=$(sed -n "s/ARG BASE_IMAGE=\"\(.*\)\"/\1/p" Dockerfile | sed -e '1 s/:/-/; t')
-    INTERNAL_TAG_VERSION_PART=$(sed -n "s/ARG VERSION=\"\(.*\)\"/\1/p" Dockerfile)
-    INTERNAL_TAG="${INTERNAL_TAG_VERSION_PART}-on-${INTERNAL_TAG_BASE_IMAGE_PART}-edge"
+    VERSION_ONLY_TAG=$(sed -n "s/ARG VERSION=\"\(.*\)\"/\1/p" Dockerfile)
 
-    printf "Pushing ${IMAGE_NAME} also as ${DOCKER_REPO}:${INTERNAL_TAG}\\n"
-    docker tag ${IMAGE_NAME} ${DOCKER_REPO}:${INTERNAL_TAG}
-    docker push ${DOCKER_REPO}:${INTERNAL_TAG}
+    printf "Pushing ${IMAGE_NAME} also as ${DOCKER_REPO}:${VERSION_ONLY_TAG}\\n"
+    docker tag ${IMAGE_NAME} ${DOCKER_REPO}:${VERSION_ONLY_TAG}
+    docker push ${DOCKER_REPO}:${VERSION_ONLY_TAG}
 fi
