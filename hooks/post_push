@@ -12,9 +12,11 @@ printf "CACHE_TAG=\"${CACHE_TAG}\"\\n"
 printf "IMAGE_NAME=\"${IMAGE_NAME}\"\\n"
 
 if test "${SOURCE_BRANCH}" = "master"; then
-    VERSION_ONLY_TAG=$(sed -n "s/ARG VERSION=\"\(.*\)\"/\1/p" Dockerfile)
+    TAG_VERSION="$(sed -n "s/ARG VERSION=\"\(.*\)\"/\1/p" Dockerfile)"
 
-    printf "Pushing ${IMAGE_NAME} also as ${DOCKER_REPO}:${VERSION_ONLY_TAG}\\n"
-    docker tag ${IMAGE_NAME} ${DOCKER_REPO}:${VERSION_ONLY_TAG}
-    docker push ${DOCKER_REPO}:${VERSION_ONLY_TAG}
+    printf "Pushing ${IMAGE_NAME} also as ${DOCKER_REPO}:${TAG_VERSION}\\n"
+    docker tag "${IMAGE_NAME}" "${DOCKER_REPO}:${TAG_VERSION}"
+    docker push "${DOCKER_REPO}:${TAG_VERSION}"
+else
+    printf "Nothing to do\\n"
 fi

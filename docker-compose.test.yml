@@ -2,5 +2,9 @@ version: '3.3'
 
 services:
   sut:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - IMAGE_NAME
     command: --version

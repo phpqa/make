@@ -14,32 +14,29 @@ printf "IMAGE_NAME=\"${IMAGE_NAME}\"\\n"
 # INTERNAL_TAG is only used for extracting the BASE_IMAGE and the VERSION, adding our own tags happens in post_push
 INTERNAL_TAG="${SOURCE_BRANCH}"
 if test "${SOURCE_BRANCH}" = "master"; then
-    INTERNAL_TAG_BASE_IMAGE_PART=$(sed -n "s/ARG BASE_IMAGE=\"\(.*\)\"/\1/p" Dockerfile | sed -e '1 s/:/-/; t')
-    INTERNAL_TAG_VERSION_PART=$(sed -n "s/ARG VERSION=\"\(.*\)\"/\1/p" Dockerfile)
-    INTERNAL_TAG="${INTERNAL_TAG_VERSION_PART}-on-${INTERNAL_TAG_BASE_IMAGE_PART}"
+    DOCKERFILE_BASE_IMAGE="$(sed -n "s/ARG BASE_IMAGE=\"\(.*\)\"/\1/p" Dockerfile | sed -e '1 s/:/-/; t')"
+    DOCKERFILE_VERSION="$(sed -n "s/ARG VERSION=\"\(.*\)\"/\1/p" Dockerfile)"
+    INTERNAL_TAG="${DOCKERFILE_VERSION}-on-${DOCKERFILE_BASE_IMAGE}"
 fi
-BASE_IMAGE=$(echo ${INTERNAL_TAG} | awk -F "-on-" '{print $2}' | sed -e '1 s/\-/:/; t')
-VERSION=$(echo ${INTERNAL_TAG} | awk -F "-on-" '{print $1}')
-
-BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-VCS_REF=$(git rev-parse HEAD)
+BASE_IMAGE="$(printf "${INTERNAL_TAG}" | awk -F "-on-" '{print $2}' | sed -e '1 s/\-/:/; t')"
+VERSION="$(printf "${INTERNAL_TAG}" | awk -F "-on-" '{print $1}')"
+BUILD_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+VCS_REF="$(git rev-parse HEAD)"
 
 printf "Build variables:\\n"
 printf "BASE_IMAGE=\"${BASE_IMAGE}\"\\n"
 printf "VERSION=\"${VERSION}\"\\n"
-printf "INTERNAL_TAG=\"${INTERNAL_TAG}\"\\n"
 printf "BUILD_DATE=\"${BUILD_DATE}\"\\n"
 printf "VCS_REF=\"${VCS_REF}\"\\n"
 printf "DOCKERFILE_PATH=\"${DOCKERFILE_PATH}\"\\n"
 printf "IMAGE_NAME=\"${IMAGE_NAME}\"\\n"
 
 docker build \
-    --build-arg BASE_IMAGE=${BASE_IMAGE} \
-    --build-arg VERSION=${VERSION} \
-    --build-arg IMAGE_NAME=${IMAGE_NAME} \
-    --build-arg INTERNAL_TAG=${INTERNAL_TAG} \
-    --build-arg BUILD_DATE=${BUILD_DATE} \
-    --build-arg VCS_REF=${VCS_REF} \
-    --file ${DOCKERFILE_PATH} \
-    --tag ${IMAGE_NAME} \
-    .
+    --build-arg BASE_IMAGE="${BASE_IMAGE}" \
+    --build-arg VERSION="${VERSION}" \
+    --build-arg BUILD_DATE="${BUILD_DATE}" \
+    --build-arg VCS_REF="${VCS_REF}" \
+    --build-arg IMAGE_NAME="${IMAGE_NAME}" \
+    --file "${DOCKERFILE_PATH}" \
+    --tag "${IMAGE_NAME}" \
+    "."
