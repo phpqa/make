@@ -8,6 +8,7 @@ ARG VERSION="4.2.1"
 # Build image
 
 FROM ${BASE_IMAGE}
+ARG TOOL_NAME
 ARG PHPQA_NAME
 ARG VERSION
 ARG BUILD_DATE
@@ -20,7 +21,7 @@ RUN apk add --no-cache tini
 
 # Install GNU Make - https://pkgs.alpinelinux.org/package/edge/main/x86/make
 
-RUN apk add --no-cache "make=~${VERSION}"
+RUN apk add --no-cache "${TOOL_NAME}=~${VERSION}"
 
 # Add entrypoint script
 
