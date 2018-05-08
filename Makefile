@@ -105,9 +105,7 @@ clean-tag-%-image:
 docker-compose-test-image:
 
 	@printf "$(STYLE_TITLE)Building an image from the $(DOCKER_COMPOSE_FILE_PATH) file $(STYLE_RESET)\\n"
-	@ \
-		export SOURCE_BRANCH="$(DOCKERFILE_TAG)"; \
-		export IMAGE_NAME="$(DOCKER_REPO):$(DOCKERFILE_TAG)"; \
+	@export IMAGE_NAME="$(DOCKER_REPO):$(DOCKERFILE_TAG)"; \
 		docker-compose --file $(DOCKER_COMPOSE_FILE_PATH) --project-name ci build
 
 	@printf "$(STYLE_TITLE)Running the image from the $(DOCKER_COMPOSE_FILE_PATH) file $(STYLE_RESET)\\n"
