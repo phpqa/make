@@ -1,6 +1,6 @@
 # Set defaults
 
-ARG BASE_IMAGE="docker:18.06"
+ARG BASE_IMAGE="docker:18.09"
 ARG TOOL_NAME="make"
 ARG REPOSITORY_NAME="phpqa/make"
 ARG VERSION="4.2.1"
